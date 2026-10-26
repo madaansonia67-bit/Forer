@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070816">
+<title>VIBE//MIRROR — Forer Effect Generator</title>
+<style>
+:root{--bg:#070816;--panel:#101329;--cyan:#4dfcff;--purple:#b46cff;--pink:#ff4fc8;--muted:#a8aecb;--line:#272b4e}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 12% 0%,#202052 0,transparent 34%),radial-gradient(ellipse at 90% 20%,#291443 0,transparent 30%),var(--bg);color:#f4f5ff;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;background-image:linear-gradient(#555a9b 1px,transparent 1px),linear-gradient(90deg,#555a9b 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,black,transparent 80%)}
+.wrap{width:min(1080px,92%);margin:auto;position:relative}.nav{display:flex;justify-content:space-between;align-items:center;padding:24px 0;border-bottom:1px solid #ffffff12}.brand{font-weight:900;letter-spacing:2px}.brand span{color:var(--cyan);text-shadow:0 0 18px #4dfcff88}.pill{font-size:11px;letter-spacing:1.4px;border:1px solid #4dfcff55;color:var(--cyan);padding:8px 12px;border-radius:999px}
+.hero{text-align:center;padding:62px 0 34px}.eyebrow{color:var(--cyan);font-size:12px;letter-spacing:3px;font-weight:800}.hero h1{font-size:clamp(42px,8vw,82px);line-height:.98;letter-spacing:-3px;margin:17px 0;background:linear-gradient(100deg,#fff 15%,var(--cyan) 48%,var(--purple) 80%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 22px #4dfcff20)}.hero p{max-width:650px;margin:18px auto;color:var(--muted);line-height:1.7;font-size:16px}
+.panel{background:linear-gradient(145deg,#151832eF,#0d1023f2);border:1px solid #555b9b66;border-radius:24px;padding:clamp(18px,4vw,32px);box-shadow:0 0 45px #4e39ff12,inset 0 1px #ffffff0c}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}.panel-head h2{font-size:18px;margin:0}.tiny{font-size:12px;color:var(--muted)}
+label{display:block;font-size:12px;color:#c5c9e5;font-weight:750;letter-spacing:1px;margin:0 0 9px}textarea,input,select{width:100%;background:#080b1a;color:#f6f7ff;border:1px solid #34395f;border-radius:13px;padding:14px;font:inherit;outline:none;transition:.2s}textarea{min-height:108px;resize:vertical}textarea:focus,input:focus,select:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #4dfcff18}textarea::placeholder,input::placeholder{color:#686f95}.controls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}.field.full{grid-column:1/-1}.hint{font-size:12px;color:#888fb3;margin-top:7px;line-height:1.5}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}.btn{cursor:pointer;border:0;border-radius:12px;padding:13px 18px;font-weight:850;letter-spacing:.3px;transition:transform .18s,filter .18s}.btn:hover{transform:translateY(-2px);filter:brightness(1.12)}.primary{background:linear-gradient(100deg,var(--cyan),#a1fff8);color:#061018;box-shadow:0 0 22px #4dfcff35}.secondary{background:#1a1e3b;color:#e9eaff;border:1px solid #3c426d}.output{margin-top:30px;display:none}.output.show{display:block;animation:rise .35s ease}@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}.result-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin:0 0 18px}.result-head h2{margin:0;font-size:23px}.reading-tag{font-size:12px;color:var(--cyan);border:1px solid #4dfcff44;border-radius:9px;padding:8px 10px}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.statement{background:linear-gradient(135deg,#151a35,#101225);border:1px solid #34385f;border-radius:16px;padding:18px;position:relative;overflow:hidden;line-height:1.65;color:#e9eaff}.statement:before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(var(--cyan),var(--purple))}.num{display:block;font-size:10px;letter-spacing:1.8px;color:var(--purple);font-weight:900;margin-bottom:8px}.statement p{margin:0}.empty{text-align:center;padding:30px;color:var(--muted)}.footer{color:#777fa7;font-size:12px;text-align:center;line-height:1.7;padding:28px 0 36px}.footer strong{color:#b8bde0}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#e9ffff;color:#061018;padding:11px 17px;border-radius:10px;font-size:13px;font-weight:800;display:none;box-shadow:0 0 25px #4dfcff44;z-index:5}.toast.show{display:block}
+@media(max-width:640px){.hero{padding-top:44px}.hero h1{letter-spacing:-2px}.controls,.cards{grid-template-columns:1fr}.field.full{grid-column:auto}.nav{padding:18px 0}.panel{border-radius:18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="nav"><div class="brand">VIBE<span>//</span>MIRROR</div><div class="pill">PSYCHOLOGY PLAYGROUND</div></header>
+<section class="hero">
+<div class="eyebrow">THE FORER EFFECT LAB</div>
+<h1>FEEL SEEN.<br>THINK DEEPER.</h1>
+<p>Explore broad, relatable personality statements, shuffled into a fresh reading every time. Your text is a creative prompt—not a personality test or a prediction.</p>
+</section>
+<main class="panel">
+<div class="panel-head"><h2>✦ Create your reading</h2><span class="tiny">LOCAL • INSTANT • NO ACCOUNT</span></div>
+<label for="userText">YOUR TEXT OR PROMPT</label>
+<textarea id="userText" maxlength="500" placeholder="Type a name, a mood, a question, or anything on your mind…"></textarea>
+<div class="hint">Your input is used as a theme for the reading. It does not reveal hidden facts about you.</div>
+<div class="controls">
+<div class="field"><label for="count">STATEMENTS PER READING</label><select id="count"><option value="10">10 statements</option><option value="11" selected>11 statements</option><option value="12">12 statements</option></select></div>
+<div class="field"><label for="style">READING STYLE</label><select id="style"><option value="mixed">Mixed signals</option><option value="strengths">Strengths & potential</option><option value="feelings">Feelings & relationships</option><option value="growth">Growth & contradictions</option><option value="future">Future-themed (for fun)</option></select></div>
+<div class="field full"><label for="seed">READING NUMBER (OPTIONAL)</label><input id="seed" type="number" min="1" max="999999" placeholder="Leave blank for a random number, e.g. 222"></div>
+</div>
+<div class="actions"><button class="btn primary" id="generate">✦ Generate reading</button><button class="btn secondary" id="randomize">↻ Surprise me</button><button class="btn secondary" id="clear">Clear</button></div>
+<div class="output" id="output" aria-live="polite">
+<div class="result-head"><h2>Your mirror reading</h2><span class="reading-tag" id="readingTag">READING #000</span></div>
+<div class="tiny" id="summary" style="margin-bottom:16px"></div>
+<div class="cards" id="cards"></div>
+<div class="actions"><button class="btn primary" id="copy">Copy reading</button><button class="btn secondary" id="again">↻ New shuffle</button></div>
+<div class="hint">These statements are intentionally broad and may fit many people. Treat them as prompts for reflection, not evidence about your personality or future.</div>
+</div>
+</main>
+<footer class="footer"><strong>VIBE//MIRROR</strong> — a creative demonstration of the Forer effect.<br>The generator works in your browser. Your text is not sent to a server.</footer>
+</div>
+<div class="toast" id="toast">Copied to clipboard</div>
+<script>
+/* 1,000+ statement variations are built from curated phrase banks. */
+const templates = {
+mixed: [
+"You can be more confident than you feel, especially when something matters to you.",
+"You appreciate being understood without having to explain every little detail.",
+"Sometimes you notice small things about a situation that other people overlook.",
+"You want to be independent, but support from the right person still matters to you.",
+"You have qualities you show easily and other sides you reveal only when you feel comfortable.",
+"You can be sociable in the right setting and quiet when you need space.",
+"You sometimes revisit a decision even after you have mostly made up your mind.",
+"You like the idea of being different, though you also want to feel accepted.",
+"You may seem calm on the outside while thinking through several things inside.",
+"You can be your own toughest critic, even when others think you did well.",
+"You value honesty, but you also know that timing and kindness matter.",
+"You sometimes delay starting something because you want to get it right.",
+"You enjoy recognition more when it comes from someone whose opinion matters to you.",
+"You can adapt to change, though you may need a little time to settle into it.",
+"You sometimes sense a mood shift before anyone talks about it.",
+"You have changed your mind about something important as you learned more.",
+"You can forgive a small mistake but remember how it made you feel.",
+"You want your choices to matter rather than simply following what everyone does.",
+"You can be practical in one situation and guided by feelings in another.",
+"You sometimes need quiet time to understand what you actually think."
+],
+strengths: [
+"You can do more than you give yourself credit for when you stay with a challenge.",
+"You learn best when you can connect an idea to something real.",
+"You have a useful strength that becomes clearer when a situation needs it.",
+"You often notice a better approach after trying the obvious one first.",
+"You can be persistent when a goal feels personally meaningful.",
+"You are capable of learning from feedback, even when the first reaction is discomfort.",
+"You sometimes help others in ways that feel small to you but matter to them.",
+"You can bring fresh ideas when a familiar approach stops working.",
+"You have the ability to improve through practice rather than needing instant talent.",
+"You can balance imagination with common sense when you give yourself time.",
+"You may underestimate how much you have learned since you began.",
+"You are often more resourceful when you break a big task into smaller pieces.",
+"You can be brave without feeling completely fearless.",
+"You have more than one way to solve a problem.",
+"You can notice a mistake and use it as information rather than a final judgment."
+],
+feelings: [
+"You want people to understand the meaning behind your words, not just the words themselves.",
+"You may act unbothered about something that mattered more than you first admitted.",
+"You appreciate loyalty, especially when it is shown through ordinary actions.",
+"You can care about someone and still need personal space.",
+"You sometimes hope others will notice what you need without being told directly.",
+"You value relationships where you can be yourself without performing.",
+"You may take a little time to trust someone, then become more open.",
+"You remember certain moments because of how they made you feel.",
+"You prefer honest reassurance over praise that sounds automatic.",
+"You can miss a person or a time in your life while still moving forward.",
+"You sometimes protect your feelings by making a situation seem less important.",
+"You appreciate people who listen without immediately trying to fix everything.",
+"You may want closeness and independence at the same time.",
+"You notice when effort feels one-sided, even if you do not mention it straight away.",
+"You sometimes need time alone to work out what you want to say."
+],
+growth: [
+"You sometimes wait for certainty when a small experiment would teach you more.",
+"You can be harder on yourself for a mistake than you would be on a friend.",
+"You may want change and still feel comfortable with familiar routines.",
+"You sometimes focus on what is missing and overlook what is already working.",
+"You can overthink a choice when both options have real advantages.",
+"You may know the next step but find it easier to plan than to begin.",
+"You can hold two opposing feelings about the same situation.",
+"You sometimes take responsibility for things that were not entirely yours to control.",
+"You may compare your progress with others even though your circumstances differ.",
+"You can benefit from asking for help before a problem becomes frustrating.",
+"You sometimes confuse being busy with making progress.",
+"You may need a pause before you can tell whether a reaction is temporary or important.",
+"You can be open to advice while still wanting the final choice to be yours.",
+"You sometimes keep an old expectation after the situation has changed.",
+"You grow when you judge yourself by patterns over time, not one difficult day."
+],
+future: [
+"A new opportunity may become clearer when you pay attention to what keeps your interest.",
+"The next useful step may be smaller and more ordinary than you expect.",
+"A conversation could help you see a familiar situation from another angle.",
+"You may find that steady effort matters more than one dramatic moment.",
+"An unexpected change can be easier to handle when you stay curious.",
+"A plan may improve once you test it instead of trying to predict every outcome.",
+"You could discover a new interest by giving an unfamiliar activity a fair try.",
+"A decision may become easier after you identify what matters most to you.",
+"Progress may look uneven while still moving in a useful direction.",
+"Someone's feedback may be worth considering without treating it as a final verdict.",
+"You may benefit from keeping more than one option open for a while.",
+"The future is not fixed; your choices, circumstances, and other people all play a role.",
+"A small habit can make a bigger difference than a single burst of motivation.",
+"You may notice a useful pattern after looking back at several experiences.",
+"An uncertain situation can become clearer as you gather real information."
+]
+};
+const extras = [
+"At times, you prefer a meaningful conversation over small talk.",
+"You can be both logical and imaginative, depending on the problem.",
+"You appreciate having a plan, but dislike feeling trapped by it.",
+"You sometimes work best under a clear deadline, though too much pressure is draining.",
+"You like being noticed for something you genuinely care about.",
+"You may be more patient with other people than with yourself.",
+"You sometimes need to hear an idea twice before deciding what you think.",
+"You value fairness, even when the fair answer is not the easiest one.",
+"You can enjoy being part of a group without wanting to lead every time.",
+"You may appear decisive after doing a lot of thinking privately.",
+"You notice when a promise and someone's actions do not quite match.",
+"You can be enthusiastic at the start and need a system to keep momentum.",
+"You sometimes feel ready for a challenge and nervous about it at the same time.",
+"You appreciate having choices, even if you eventually choose the simplest one.",
+"You may be drawn to ideas that leave room for interpretation.",
+"You can enjoy attention in one context and prefer privacy in another.",
+"You sometimes understand your own opinion only after explaining it.",
+"You value competence, but you also respect people who admit what they do not know.",
+"You can be flexible about methods while caring strongly about the result.",
+"You may need both novelty and routine, just in different amounts.",
+"You sometimes look for a deeper meaning in an ordinary event.",
+"You can be affected by criticism and still use it constructively later.",
+"You may find it easier to encourage a friend than to encourage yourself.",
+"You enjoy solving things independently, but collaboration can reveal blind spots.",
+"You sometimes change your approach when the first one stops being useful.",
+"You can be cautious about a new idea and curious about it at once.",
+"You want your time to feel well spent, not merely filled.",
+"You may be more observant when you feel relaxed and safe.",
+"You can prefer direct answers while still enjoying a little mystery.",
+"You sometimes need to separate what you know from what you suspect.",
+"You can care about a result without wanting it to define your worth.",
+"You may be motivated by both curiosity and the wish to do well.",
+"You appreciate specific feedback more than vague approval.",
+"You can be serious about a goal and still need breaks.",
+"You sometimes notice your own progress only when you compare it with an earlier version of yourself.",
+"You may want to make a good impression without pretending to be someone else.",
+"You can be independent and still learn a lot from other people's experiences.",
+"You sometimes need to try something before knowing whether you like it.",
+"You may prefer a few dependable connections over constant social activity.",
+"You can feel proud of an achievement and immediately think about what comes next."
+];
+// Generate a large library from the original lines plus carefully varied, non-claiming reflection prompts.
+const bases = Object.values(templates).flat().concat(extras);
+const openers = ["Sometimes, ","In certain situations, ","You may find that ","It is possible that ","At times, ","You might notice that ","For you, there may be moments when ","One possibility is that ","You may recognise how ","Every so often, "];
+const closers = ["— and that is more common than it may seem.","though it depends on the situation.","without it defining who you are.","especially when the stakes feel personal.","and it can change over time.","depending on who you are with.","even if you do not always say it out loud.","which is worth noticing, not judging.","but it is not true in every setting.","as part of being human."];
+const library = [];
+for(let i=0;i<1000;i++){
+ const base=bases[i%bases.length];
+ const mode=Math.floor(i/bases.length);
+ let sentence=base;
+ if(mode>0) sentence=openers[mode%openers.length]+base.charAt(0).toLowerCase()+base.slice(1).replace(/[.!?]$/,"")+closers[(i*7+mode)%closers.length];
+ library.push(sentence);
+}
+const $=id=>document.getElementById(id);
+let lastReading=[];
+function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function makeReading(){
+ const prompt=$('userText').value.trim();
+ const style=$('style').value;
+ const count=Number($('count').value);
+ const pool=templates[style].concat(style==='mixed'?extras:[]);
+ // Prompt is treated as a theme label, not analysed for personal facts.
+ let shuffled=shuffle(pool);
+ // Blend the selected style with the full broad library to make repeated readings less repetitive.
+ shuffled=shuffle(shuffled.concat(shuffle(library).slice(0,80)));
+ lastReading=shuffled.slice(0,count);
+ let number=$('seed').value.trim();
+ if(number==='') number=String(Math.floor(Math.random()*999999)+1);
+ $('readingTag').textContent='READING #'+String(number).padStart(3,'0');
+ $('summary').textContent=(prompt?'Prompt: “'+prompt.slice(0,90)+(prompt.length>90?'…':'')+'” · ':'')+count+' shuffled statements · '+style.replace(/^\w/,c=>c.toUpperCase())+' style';
+ $('cards').innerHTML='';
+ lastReading.forEach((s,i)=>{
+   const card=document.createElement('article');card.className='statement';
+   const num=document.createElement('span');num.className='num';num.textContent='SIGNAL '+String(i+1).padStart(2,'0');
+   const p=document.createElement('p');p.textContent=s;
+   card.append(num,p);$('cards').appendChild(card);
+ });
+ $('output').classList.add('show');
+ $('output').scrollIntoView({behavior:'smooth',block:'start'});
+}
+$('generate').addEventListener('click',makeReading);
+$('again').addEventListener('click',makeReading);
+$('randomize').addEventListener('click',()=>{const prompts=['What should I understand about myself?','A new chapter','My strengths','A decision on my mind','What might I be overlooking?','Just for fun'];$('userText').value=prompts[Math.floor(Math.random()*prompts.length)];$('seed').value='';makeReading()});
+$('clear').addEventListener('click',()=>{$('userText').value='';$('seed').value='';$('output').classList.remove('show');$('userText').focus()});
+$('copy').addEventListener('click',async()=>{
+ const text='VIBE//MIRROR — Reading '+$('readingTag').textContent+'\n'+$('summary').textContent+'\n\n'+lastReading.map((s,i)=>(i+1)+'. '+s).join('\n\n')+'\n\nFor reflection and entertainment; these broad statements can fit many people.';
+ try{await navigator.clipboard.writeText(text);toast('Reading copied!')}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Reading copied!')}
+});
+function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),1800)}
+</script>
+</body>
+</html>
